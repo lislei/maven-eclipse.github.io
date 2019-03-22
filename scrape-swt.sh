@@ -1,12 +1,12 @@
 #!/bin/bash
 #set -e
-# Instead of a very complicated java based downloader, 
+# Instead of a very complicated java based downloader,
 # use basic bash to parse the raw HTML for download links, sort, extract, and install SWT
 #
 # Its best to run each stage individually like:
 # bash -c "source scrape-swt.sh; set -e; stage_4_install"
 #
-# TODO: Somehow ignore maven versions we already have. 
+# TODO: Somehow ignore maven versions we already have.
 # Until then source this script and run each stage manually
 # Remove existing releases from tmp/urls.txt after stage_1_scrape
 
@@ -120,9 +120,9 @@ stage_4_install() {
 	for VERSION in `ls -d */ | sort -t. -n -k1,1 -k2,2 -k3,3 -k4,4 | rev | cut -c 2- | rev`; do
 		echo "Selected version $VERSION"
 		cd $VERSION
-		for JAR_MAIN in `ls *.jar`; do 
+		for JAR_MAIN in `ls *.jar`; do
 			BASE=`basename $JAR_MAIN .jar`
-			ARTIFACT_ID=org.eclipse.swt.`echo ${BASE#swt-$VERSION-} | sed -r -e 's/\-/\./g'`
+			ARTIFACT_ID=org.eclipse.swt.`echo ${BASE#swt-$VERSION-} | gsed -r -e 's/\-/\./g'`
 			echo "Version $VERSION | Main $JAR_MAIN | Id $ARTIFACT_ID"
 			if [[ $ARTIFACT_ID == *"wce"* ]]
 			then
